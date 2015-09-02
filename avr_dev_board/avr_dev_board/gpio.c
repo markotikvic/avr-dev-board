@@ -7,35 +7,45 @@
 
 #include "gpio.h"
 
-void setPinDir(volatile uint8_t *targetPort, uint8_t pinNo, uint8_t dir)
+void set_pin_dir(volatile uint8_t *target_port, uint8_t pin_no, uint8_t dir)
 {
 	switch(dir){
 	case OUTPUT:
-		(*targetPort) |= (1 << pinNo);
+		(*target_port) |= (1 << pin_no);
 	break;
 	case INPUT:
-		(*targetPort) &= ~(1 << pinNo);
+		(*target_port) &= ~(1 << pin_no);
 	break;
 	default: break;
 	}
 }
 
-void writePin(volatile uint8_t *targetPort, uint8_t pinNo, uint8_t pinVal)
+void set_pin(volatile uint8_t *target_port, uint8_t pin_no)
 {
-	switch(pinVal){
+	(*target_port) |= (1 << pin_no);
+}
+
+void clear_pin(volatile uint8_t *target_port, uint8_t pin_no)
+{
+	(*target_port) &= ~(1 << pin_no);
+}
+
+void write_pin(volatile uint8_t *target_port, uint8_t pin_no, uint8_t pin_val)
+{
+	switch(pin_val){
 	case HIGH:
-		(*targetPort) |= (1 << pinNo);
+		(*target_port) |= (1 << pin_no);
 	break;
 	case LOW:
-		(*targetPort) &= ~(1 << pinNo);
+		(*target_port) &= ~(1 << pin_no);
 	break;
 	default: break;
 	}
 }
 
-int readPin(volatile uint8_t *targetPort, uint8_t pinNo)
+int read_pin(volatile uint8_t *target_port, uint8_t pin_no)
 {
-	uint8_t tmpPort = (*targetPort) & (1 << pinNo);
+	uint8_t tmpPort = (*target_port) & (1 << pin_no);
 
 	if(tmpPort != 0) {
 		return 1;
@@ -44,59 +54,59 @@ int readPin(volatile uint8_t *targetPort, uint8_t pinNo)
 	}
 }
 
-void togglePin(volatile uint8_t *targetPort, uint8_t pinNo)
+void toggle_pin(volatile uint8_t *target_port, uint8_t pin_no)
 {
-	uint8_t tmpPort = (*(targetPort)) & (1 << pinNo);
+	uint8_t tmpPort = (*(target_port)) & (1 << pin_no);
 
 	if(tmpPort != 0) {
-		(*targetPort) &= ~(1 << pinNo);
+		(*target_port) &= ~(1 << pin_no);
 	} else {
-		(*targetPort) |= (1 << pinNo);
+		(*target_port) |= (1 << pin_no);
 	}
 }
 
-void enableHbridge()
+void enable_h_bridge()
 {
-	setPinDir(&MOT_DDR, MOT_EN, OUTPUT);
-	setPinDir(&MOT_DDR, MOT_PIN0, OUTPUT);
-	setPinDir(&MOT_DDR, MOT_PIN1, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_EN, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_PIN0, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_PIN1, OUTPUT);
 
-	writePin(&MOT_PORT, MOT_EN, HIGH);
-	writePin(&MOT_PORT, MOT_PIN0, LOW);
-	writePin(&MOT_PORT, MOT_PIN1, LOW);
+	write_pin(&MOT_PORT, MOT_EN, HIGH);
+	write_pin(&MOT_PORT, MOT_PIN0, LOW);
+	write_pin(&MOT_PORT, MOT_PIN1, LOW);
 }
 
-void disableHbridge()
+void disable_h_bridge()
 {
-	setPinDir(&MOT_DDR, MOT_EN, OUTPUT);
-	setPinDir(&MOT_DDR, MOT_PIN0, OUTPUT);
-	setPinDir(&MOT_DDR, MOT_PIN1, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_EN, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_PIN0, OUTPUT);
+	set_pin_dir(&MOT_DDR, MOT_PIN1, OUTPUT);
 
-	writePin(&MOT_PORT, MOT_EN, LOW);
-	writePin(&MOT_PORT, MOT_PIN0, LOW);
-	writePin(&MOT_PORT, MOT_PIN1, LOW);
+	write_pin(&MOT_PORT, MOT_EN, LOW);
+	write_pin(&MOT_PORT, MOT_PIN0, LOW);
+	write_pin(&MOT_PORT, MOT_PIN1, LOW);
 }
 
-void startMotorCW()
+void start_motor_CW()
 {
-	writePin(&MOT_PORT, MOT_PIN0, LOW);
-	writePin(&MOT_PORT, MOT_PIN1, HIGH);
+	write_pin(&MOT_PORT, MOT_PIN0, LOW);
+	write_pin(&MOT_PORT, MOT_PIN1, HIGH);
 }
 
-void startMotorCCW()
+void start_motor_CCW()
 {
-	writePin(&MOT_PORT, MOT_PIN0, HIGH);
-	writePin(&MOT_PORT, MOT_PIN1, LOW);
+	write_pin(&MOT_PORT, MOT_PIN0, HIGH);
+	write_pin(&MOT_PORT, MOT_PIN1, LOW);
 }
 
-void stopMotor()
+void stop_motor()
 {
-	writePin(&MOT_PORT, MOT_PIN0, LOW);
-	writePin(&MOT_PORT, MOT_PIN1, LOW);
+	write_pin(&MOT_PORT, MOT_PIN0, LOW);
+	write_pin(&MOT_PORT, MOT_PIN1, LOW);
 }
 
-void haltMotor()
+void halt_motor()
 {
-	writePin(&MOT_PORT, MOT_PIN0, HIGH);
-	writePin(&MOT_PORT, MOT_PIN1, HIGH);
+	write_pin(&MOT_PORT, MOT_PIN0, HIGH);
+	write_pin(&MOT_PORT, MOT_PIN1, HIGH);
 }

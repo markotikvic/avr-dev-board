@@ -11,29 +11,24 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-long counts = 0;
+static volatile long counts = 0;
 
-void enableCounter()
+void enable_counter()
 {
-	setPinDir(&EXT_DDR, EXT_CH_A, INPUT);
-	setPinDir(&EXT_DDR, EXT_CH_B, INPUT);
+	set_pin_dir(&EXT_DDR, EXT_CH_A, INPUT);
+	set_pin_dir(&EXT_DDR, EXT_CH_B, INPUT);
 	EICRA |= (1 << ISC11);	/* Falling edge on INT1. */
 	EIMSK |= (1 << INT1);
 	sei();
 }
 
-long getCount()
+long get_count()
 {
 	return counts;
 }
 
 ISR(INT1_vect)
 {
-	/* CCW */
-	if( EXT_PORT & (1 << EXT_CH_A) ) {
-		counts--;
-	} else if( !(EXT_PORT & (1 << EXT_CH_A)) ) {
-	/* CW */
-		counts++;
-	}
+	if( EXT_PORT & (1 << EXT_CH_A) ) counts--;			/* CCW */
+	else if( !(EXT_PORT & (1 << EXT_CH_A)) ) counts++;	/* CW */
 }

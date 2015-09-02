@@ -10,10 +10,10 @@
 #include "adc.h"
 #include "gpio.h"
 
-volatile uint8_t adcDone = 0;
-volatile int adcResult = 0;
+static volatile uint8_t adc_done = 0;
+static volatile int adc_result = 0;
 
-void initAdc()
+void init_adc()
 {
 	ADMUX &= ~(0x0F | 1 << ADLAR);	//Right adjust, ADCO
 	ADCSRA |= (1 << ADEN | 1 << ADIE | 1 << ADPS0 | 1 << ADPS1 | 1 << ADSC);
@@ -22,28 +22,28 @@ void initAdc()
 	sei();
 }
 
-void startNewAdc()
+void start_new_adc()
 {
-	if(adcDone) {
-		adcDone = 0;
+	if(adc_done) {
+		adc_done = 0;
 		ADMUX &= ~(0x0F | 1 << ADLAR);	//Right adjust, ADCO
 		ADCSRA |= (1 << ADSC);
 	}
 }
 
-int getAdcResult()
+int get_adc_result()
 {
 	/* If more than 8-bit precision is used - read ADCL first and ADCH second. */
-	return adcResult;
+	return adc_result;
 }
 
 ISR(ADC_vect)
 {
-	adcDone = 1;
-	uint16_t adcResultTemp = 0;
-	adcResultTemp |= ADCL;
-	adcResultTemp |= (ADCH << 8);
-	adcResult = adcResultTemp;
+	adc_done = 1;
+	uint16_t temp = 0;
+	temp |= ADCL;
+	temp |= (ADCH << 8);
+	adc_result = temp;
 
-	//adcResult = (int)(adcResult + (float)((adcResultTemp - adcResult)*0.20));
+	//adc_result = (int)(adc_result + (float)((temp - adc_result)*0.20));
 }

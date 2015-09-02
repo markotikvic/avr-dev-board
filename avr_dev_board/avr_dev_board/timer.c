@@ -14,17 +14,17 @@
 
 #define PID_CONST ((uint8_t)10)
 
-PWM_S myPwm;
-PID_S myPid;
-volatile uint32_t timerNode0 = 0;
-volatile uint32_t timerNode1 = 0;
-volatile uint32_t timerNode2 = 0;
-volatile uint32_t pauseTime = 0;
-uint8_t pwmFlag = PWM_OFF;
-uint8_t pidFlag = 0;
-uint8_t fsmStep = 0;
+static PWM_S my_pwm;
+static PID_S my_pid;
+static volatile uint32_t timer_node_0 = 0;
+static volatile uint32_t timer_node_1 = 0;
+static volatile uint32_t timer_node_2 = 0;
+static volatile uint32_t pause_time = 0;
+static uint8_t pwm_flag = PWM_OFF;
+static uint8_t pid_flag = 0;
+static uint8_t fsm_step = 0;
 
-void initTimer1(uint8_t prescaler, uint16_t topVal)
+void init_timer_1(uint8_t prescaler, uint16_t topw_val)
 {
 	uint16_t temp;
 
@@ -41,199 +41,204 @@ void initTimer1(uint8_t prescaler, uint16_t topVal)
 	temp |= (1 << TOIE0);
 	TIMSK1 = temp;
 
-	OCR1A = topVal;
+	OCR1A = topw_val;
 
 	sei();
 }
 
-void enablePwm(PWM_S *pwm)
+void init_pwm(PWM_S *pwm)
 {
-	myPwm.targetPort = pwm->targetPort;
-	myPwm.pinNo = pwm->pinNo;
-	myPwm.period = (volatile uint32_t) pwm->period;
-	myPwm.topVal = (volatile uint32_t) pwm->topVal;
-	myPwm.pwmTick = 0;
-	pwmFlag = PWM_ON;
+	my_pwm.target_port = pwm->target_port;
+	my_pwm.pin = pwm->pin;
+	my_pwm.period = (volatile uint32_t) pwm->period;
+	my_pwm.top_val = (volatile uint32_t) pwm->top_val;
+	my_pwm.pwm_tick = 0;
+	pwm_flag = PWM_ON;
 }
 
-void pwmReff(uint32_t reff)
+void pwm_ref_val(uint32_t reff)
 {
-	if(reff < myPwm.period ) {
-		myPwm.topVal = reff;
+	if(reff < my_pwm.period ) {
+		my_pwm.top_val = reff;
 	} else {
-		myPwm.topVal = myPwm.period;
+		my_pwm.top_val = my_pwm.period;
 	}
 }
 
-void stopPwm()
+void stop_pwm()
 {
-	pwmFlag = PWM_OFF;
+	pwm_flag = PWM_OFF;
 }
 
-void pidSetup(float kp, float ki, float kd, uint16_t samplePeriod)
+void start_pwm()
 {
-	myPid.kp = kp;
-	myPid.ki = ki;
-	myPid.kd = kd;
-	myPid.samplePeriod = samplePeriod;
-	myPid.samplePeriodOpt = 1 / samplePeriod;
-	myPid.pwmPeriod = 200; 	//20ms for motors
-
-	enableCounter();
-	initTimer1(PRESCALER8, 100);	/* 0.1 ms */
-	enableHbridge();
+	pwm_flag = PWM_ON;
 }
 
-void pidReff(uint16_t refSpeed)
+void pid_setup_params(float kp, float ki, float kd, uint16_t sample_period)
 {
-	myPid.refSpeed = refSpeed;
-	pidFlag = 1;
+	my_pid.kp = kp;
+	my_pid.ki = ki;
+	my_pid.kd = kd;
+	my_pid.sample_period = sample_period;
+	my_pid.sample_peiod_opt = 1 / sample_period;
+	my_pid.pwm_period = 200; 	//20ms for motors
+
+	enable_counter();
+	init_timer_1(PRESCALER8, 100);	/* 0.1 ms */
+	enable_h_bridge();
 }
 
-void pidMotDir(uint8_t motDir)
+void pid_ref_val(uint16_t ref_speed)
 {
-	myPid.motDir = motDir;
+	my_pid.ref_speed = ref_speed;
+	pid_flag = 1;
+}
+
+void pid_mot_direction(uint8_t mot_dir)
+{
+	my_pid.dir = mot_dir;
 }
 
 void pid()
 {
-	long count = getCount();
+	long count = get_count();
 	int temp = 0;
 	/* Speed difference. */
-	myPid.err = myPid.refSpeed - (uint16_t)(count - myPid.lastCount);
+	my_pid.err = my_pid.ref_speed - (uint16_t)(count - my_pid.last_count);
 
 	/* Error sum. */
-	myPid.errSum += myPid.err;
-	if(myPid.errSum > 200) {
-		myPid.errSum = 200;
+	my_pid.err_sum += my_pid.err;
+	if(my_pid.err_sum > 200) {
+		my_pid.err_sum = 200;
 	}
 
 	/* Error difference. */
-	myPid.errDiff = myPid.err - myPid.lastErr;
+	my_pid.err_diff = my_pid.err - my_pid.last_err;
 
 	/* PID output */
-	temp = (myPid.kp*myPid.err + myPid.ki*myPid.errSum + myPid.kd*myPid.errDiff)/PID_CONST;
-	if(temp > myPid.pwmPeriod) {
-		myPid.pwmTopVal = myPid.pwmPeriod;
+	temp = (my_pid.kp*my_pid.err + my_pid.ki*my_pid.err_sum + my_pid.kd*my_pid.err_diff)/PID_CONST;
+	if(temp > my_pid.pwm_period) {
+		my_pid.pwm_top_val = my_pid.pwm_period;
 	} else {
-		myPid.pwmTopVal = temp;
+		my_pid.pwm_top_val = temp;
 	}
 
 	/* Memorize last values. */
-	myPid.lastCount = count;
-	myPid.lastErr = myPid.err;
+	my_pid.last_count = count;
+	my_pid.last_err = my_pid.err;
 }
 
 
-void stopPid()
+void stop_pid_control()
 {
-	pidFlag = PID_OFF;
+	pid_flag = PID_OFF;
 }
 
-void setTimer(uint8_t timerNum, uint32_t time)
+void set_timer(uint8_t timer_num, uint32_t time)
 {
-	switch(timerNum) {
+	switch(timer_num) {
 	case 0:
-		timerNode0 = time;
+		timer_node_0 = time;
 		break;
 	case 1:
-		timerNode1 = time;
+		timer_node_1 = time;
 		break;
 	case 2:
-		timerNode2 = time;
+		timer_node_2 = time;
 		break;
 	}
 }
 
-int getTimer(uint8_t timerNum)
+int get_timer(uint8_t timer_num)
 {
-	switch(timerNum) {
+	switch(timer_num) {
 	case 0:
-		return timerNode0;
+		return timer_node_0;
 	case 1:
-		return timerNode1;
+		return timer_node_1;
 	case 2:
-		return timerNode2;
+		return timer_node_2;
 	default: return 1;
 	}
 }
 
-void pauseLoop(uint16_t pause)
+void pause_loop(uint16_t pause)
 {
-	pauseTime = pause;
-	while(pauseTime);
+	pause_time = pause;
+	while(pause_time);
 }
 
-void threadsLoop()
+void therads_loop_example()
 {
-	switch(fsmStep){
+	switch(fsm_step){
 	case 0:
-		if(!getTimer(0)) {
-			togglePin(&PORTD, GPIO_PIN6);
-			setTimer(0, 250);
-			pauseLoop(1);
+		if(!get_timer(0)) {
+			toggle_pin(&PORTD, GPIO_PIN6);
+			set_timer(0, 250);
+			pause_loop(1);
 		}
-		fsmStep++;
+		fsm_step++;
 		break;
 	case 1:
-		if(!getTimer(1)) {
-			togglePin(&PORTB, GPIO_PIN0);
-			setTimer(1, 500);
-			pauseLoop(1);
+		if(!get_timer(1)) {
+			toggle_pin(&PORTB, GPIO_PIN0);
+			set_timer(1, 500);
+			pause_loop(1);
 		}
-		fsmStep++;
+		fsm_step++;
 		break;
 	case 2:
-		if(!getTimer(2)) {
-			togglePin(&PORTD, GPIO_PIN7);
-			setTimer(2, 1000);
-			pauseLoop(1);
+		if(!get_timer(2)) {
+			toggle_pin(&PORTD, GPIO_PIN7);
+			set_timer(2, 1000);
+			pause_loop(1);
 		}
-		fsmStep = 0;
+		fsm_step = 0;
 		break;
 	}
 }
 
 ISR(TIMER1_OVF_vect)
 {
-	if(pwmFlag == PWM_ON) {
-		myPwm.pwmTick++;
-		if(myPwm.pwmTick >= myPwm.period && myPwm.topVal > 0) {
-			writePin(myPwm.targetPort, myPwm.pinNo, HIGH);
-			myPwm.pwmTick = 0;
-		} else if(myPwm.pwmTick >= myPwm.topVal) {
-			writePin(myPwm.targetPort, myPwm.pinNo, LOW);
+	if(pwm_flag == PWM_ON) {
+		my_pwm.pwm_tick++;
+		if(my_pwm.pwm_tick >= my_pwm.period && my_pwm.top_val > 0) {
+			write_pin(my_pwm.target_port, my_pwm.pin, HIGH);
+			my_pwm.pwm_tick = 0;
+		} else if(my_pwm.pwm_tick >= my_pwm.top_val) {
+			write_pin(my_pwm.target_port, my_pwm.pin, LOW);
 		}
 	}
 
-	if(pidFlag == 1) {
-		myPid.pidTickSample++;
-		if(myPid.pidTickSample >= myPid.samplePeriod) {
-			myPid.pidTickSample = 0;
+	if(pid_flag == 1) {
+		my_pid.pid_tick_sample++;
+		if(my_pid.pid_tick_sample >= my_pid.sample_period) {
+			my_pid.pid_tick_sample = 0;
 			pid();
 		}
 
-		myPid.pidTickPwm++;
-		if(myPid.pidTickPwm >= myPid.pwmPeriod && myPid.pwmTopVal > 0) {
-			myPid.pidTickPwm = 0;
+		my_pid.pid_pwm_tick++;
+		if(my_pid.pid_pwm_tick >= my_pid.pwm_period && my_pid.pwm_top_val > 0) {
+			my_pid.pid_pwm_tick = 0;
 
-			if(myPid.motDir == CW) {
+			if(my_pid.dir == CW) {
 				MOT_PORT |= (1 << MOT_PIN0);
-			} else if(myPid.motDir == CCW) {
+			} else if(my_pid.dir == CCW) {
 				MOT_PORT |= (1 << MOT_PIN1);
 			}
-		} else if (myPid.pidTickPwm >= myPid.pwmTopVal) {
-			if(myPid.motDir == CW) {
+		} else if (my_pid.pid_pwm_tick >= my_pid.pwm_top_val) {
+			if(my_pid.dir == CW) {
 				MOT_PORT &= ~(1 << MOT_PIN0);
-			} else if(myPid.motDir == CCW) {
+			} else if(my_pid.dir == CCW) {
 				MOT_PORT &= ~(1 << MOT_PIN1);
 			}
 		}
 	}
 
 
-	if(timerNode0 > 0) timerNode0--;
-	if(timerNode1 > 0) timerNode1--;
-	if(timerNode2 > 0) timerNode2--;
-	if(pauseTime > 0) pauseTime--;
+	if(timer_node_0 > 0) timer_node_0--;
+	if(timer_node_1 > 0) timer_node_1--;
+	if(timer_node_2 > 0) timer_node_2--;
+	if(pause_time > 0) pause_time--;
 }

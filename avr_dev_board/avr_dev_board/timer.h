@@ -5,8 +5,8 @@
  *      Author: marko
  */
 
-#ifndef HEADERS_TIMER_H_
-#define HEADERS_TIMER_H
+#ifndef _TIMER_H_
+#define _TIMER_H
 
 #include <avr/io.h>
 
@@ -24,49 +24,51 @@
 #define CCW ((uint8_t)1)
 
 typedef struct {
-	volatile uint8_t *targetPort;
-	uint8_t pinNo;
+	volatile uint8_t *target_port;
+	uint8_t pin;
 	uint32_t period;
-	uint32_t topVal;
-	uint32_t pwmTick;
+	uint32_t top_val;
+	uint32_t pwm_tick;
 } PWM_S;
 
 typedef struct {
-	uint8_t motDir;
+	uint8_t dir;
 	float kp;
 	float ki;
 	float kd;
-	uint16_t refSpeed;
+	uint16_t ref_speed;
 
-	uint16_t samplePeriod;
-	float samplePeriodOpt;
-	volatile uint16_t pidTickSample;
+	uint16_t sample_period;
+	float sample_peiod_opt;
+	volatile uint16_t pid_tick_sample;
 
-	uint16_t pwmTopVal;
-	uint16_t pwmPeriod;
-	volatile uint16_t pidTickPwm;
+	uint16_t pwm_top_val;
+	uint16_t pwm_period;
+	volatile uint16_t pid_pwm_tick;
 
 	long err;
-	long lastErr;
-	long errDiff;
-	long errSum;
-	long lastCount;
+	long last_err;
+	long err_diff;
+	long err_sum;
+	long last_count;
 } PID_S;
 
-void initTimer1(uint8_t prescaler, uint16_t topVal);
-void setTimer(uint8_t timerNum, uint32_t time);
-int getTimer(uint8_t timerNum);
-void pauseLoop(uint16_t pause);
+void init_timer_1(uint8_t prescaler, uint16_t top_val);
+void set_timer(uint8_t timer_num, uint32_t time);
+int get_timer(uint8_t timer_num);
+void pause_loop(uint16_t pause);
 
-void enablePwm(PWM_S *pwm);
-void stopPwm();
+void init_pwm(PWM_S *pwm);
+void stop_pwm();
+void start_pwm();
+void pwm_ref_val(uint32_t reff);
 
-void threadsLoop();
+void therads_loop_example();
 
-void pidSetup(float kp, float ki, float kd, uint16_t samplePeriod);
-void pidReff(uint16_t refSpeed);
+void pid_setup_params(float kp, float ki, float kd, uint16_t sample_period);
+void pid_ref_val(uint16_t ref_speed);
 //void pid();	/* Gets called in timer 1 interrupt routine. */
-void stopPid();
-void pidMotDir(uint8_t motDir);
+void stop_pid_control();
+void pid_mot_direction(uint8_t mot_dir);
 
-#endif /* HEADERS_TIMER_H_ */
+#endif /* _TIMER_H_ */

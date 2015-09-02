@@ -5,15 +5,15 @@
  *      Author: marko
  */
 
-#ifndef HEADERS_COUNTER_H_
-#define HEADERS_COUNTER_H_
+#ifndef _COUNTER_H_
+#define _COUNTER_H_
 
 #define EXT_DDR		DDRD
 #define EXT_PORT	PIND
 #define EXT_CH_A	GPIO_PIN2
 #define EXT_CH_B	GPIO_PIN3
 
-void enableCounter();
-long getCount();
+void enable_counter();
+long get_count();
 
-#endif /* HEADERS_COUNTER_H_ */
+#endif /* _COUNTER_H_ */

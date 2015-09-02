@@ -19,22 +19,22 @@
 
 int main()
 {
-	initUart(UART_9600);
-	enableHbridge();
-	initTimer1(PRESCALER8, 1000);
-//	pidSetup(1, 0, 1, 1000);	/* pid() loops every 10ms */
-//	pidMotDir(CCW);
-//	pidReff(0);
+	init_uart(UART_9600);
+	enable_h_bridge();
+	init_timer_1(PRESCALER8, 1000);
+	pid_setup_params(1, 0, 1, 1000);	/* pid() loops every 10ms */
+	pid_mot_direction(CCW);
+	pid_ref_val(0);
 
 	while (1) {
-		startMotorCCW();
-		pauseLoop(4000);
-		stopMotor();
-		pauseLoop(4000);
-		startMotorCW();
-		pauseLoop(4000);
-		stopMotor();
-		pauseLoop(4000);
+		start_motor_CCW();
+		pause_loop(4000);
+		stop_motor();
+		pause_loop(4000);
+		start_motor_CW();
+		pause_loop(4000);
+		stop_motor();
+		pause_loop(4000);
 	}
 	return 0;
 }

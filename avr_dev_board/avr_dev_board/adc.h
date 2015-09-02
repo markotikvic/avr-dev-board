@@ -5,8 +5,8 @@
  *      Author: marko
  */
 
-#ifndef HEADERS_ADC_H_
-#define HEADERS_ADC_H_
+#ifndef _ADC_H_
+#define _ADC_H_
 
 #include <avr/io.h>
 
@@ -14,8 +14,8 @@
 
 #define ADC_MAX_VAL ((uint16_t)1023)
 
-void initAdc();
-void startNewAdc();
-int getAdcResult();
+void init_adc();
+void start_new_adc();
+int get_adc_result();
 
-#endif /* HEADERS_ADC_H_ */
+#endif /* _ADC_H_ */
