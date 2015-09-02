@@ -1,0 +1,9 @@
+DISPLAY ALL
+RATSNEST
+DISPLAY None 
+DISPLAY Bottom Pads Vias
+EXPORT IMAGE D:\Dropbox\pcbExportBottom.png
+DISPLAY None 
+DISPLAY Top Pads Vias
+EXPORT IMAGE D:\Dropbox\pcbExportTop.png
+Display Top Bottom Unrouted Dimension tPlace bPlace 
