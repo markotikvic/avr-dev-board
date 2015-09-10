@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "avr-dev-board-gpio-example", "avr-dev-board-gpio-example\avr-dev-board-gpio-example.cproj", "{C506C2B6-57D7-408E-B3C3-E04BA9FD1EA4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C506C2B6-57D7-408E-B3C3-E04BA9FD1EA4}.Debug|AVR.ActiveCfg = Debug|AVR
+		{C506C2B6-57D7-408E-B3C3-E04BA9FD1EA4}.Debug|AVR.Build.0 = Debug|AVR
+		{C506C2B6-57D7-408E-B3C3-E04BA9FD1EA4}.Release|AVR.ActiveCfg = Release|AVR
+		{C506C2B6-57D7-408E-B3C3-E04BA9FD1EA4}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
