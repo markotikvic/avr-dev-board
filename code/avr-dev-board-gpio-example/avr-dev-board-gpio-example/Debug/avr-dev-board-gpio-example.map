@@ -13,51 +13,8 @@ Discarded input sections
  .text          0x00000000        0x0 gpio.o
  .data          0x00000000        0x0 gpio.o
  .bss           0x00000000        0x0 gpio.o
- .text.set_pin_dir
-                0x00000000       0x46 gpio.o
- .text.set_pin  0x00000000       0x1e gpio.o
- .text.clear_pin
-                0x00000000       0x20 gpio.o
  .text.write_pin
                 0x00000000       0x46 gpio.o
- .text.read_pin
-                0x00000000       0x20 gpio.o
- .text.toggle_pin
-                0x00000000       0x2e gpio.o
- .debug_info    0x00000000      0x215 gpio.o
- .debug_abbrev  0x00000000       0xe0 gpio.o
- .debug_loc     0x00000000      0x1bc gpio.o
- .debug_aranges
-                0x00000000       0x48 gpio.o
- .debug_ranges  0x00000000       0x38 gpio.o
- .debug_line    0x00000000      0x111 gpio.o
- .debug_str     0x00000000      0x1c5 gpio.o
- .comment       0x00000000       0x31 gpio.o
- .debug_frame   0x00000000       0x74 gpio.o
- .text          0x00000000        0x0 motor.o
- .data          0x00000000        0x0 motor.o
- .bss           0x00000000        0x0 motor.o
- .text.enable_h_bridge
-                0x00000000       0x4a motor.o
- .text.disable_h_bridge
-                0x00000000       0x4a motor.o
- .text.start_motor_CW
-                0x00000000       0x1a motor.o
- .text.start_motor_CCW
-                0x00000000       0x1a motor.o
- .text.stop_motor
-                0x00000000       0x1a motor.o
- .text.halt_motor
-                0x00000000       0x1a motor.o
- .debug_info    0x00000000      0x3f6 motor.o
- .debug_abbrev  0x00000000       0xb2 motor.o
- .debug_aranges
-                0x00000000       0x48 motor.o
- .debug_ranges  0x00000000       0x38 motor.o
- .debug_line    0x00000000      0x113 motor.o
- .debug_str     0x00000000      0x1d3 motor.o
- .comment       0x00000000       0x31 motor.o
- .debug_frame   0x00000000       0x74 motor.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
@@ -93,7 +50,6 @@ Address of section .data set to 0x800100
 LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5/crtm328p.o
 LOAD avr-dev-board-gpio-example.o
 LOAD gpio.o
-LOAD motor.o
 START GROUP
 LOAD c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5\libm.a
 END GROUP
@@ -193,7 +149,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000       0x86
+.text           0x00000000      0x1d8
  *(.vectors)
  .vectors       0x00000000       0x68 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/../../../../avr/lib/avr5/crtm328p.o
                 0x00000000                __vector_default
@@ -274,13 +230,27 @@ END GROUP
                 0x0000007c                __vector_20
                 0x00000080                . = ALIGN (0x2)
  *(.text.*)
- .text.main     0x00000080        0x2 avr-dev-board-gpio-example.o
+ .text.main     0x00000080       0x82 avr-dev-board-gpio-example.o
                 0x00000080                main
-                0x00000082                . = ALIGN (0x2)
+ .text.set_pin_dir
+                0x00000102       0x46 gpio.o
+                0x00000102                set_pin_dir
+ .text.set_pin  0x00000148       0x1e gpio.o
+                0x00000148                set_pin
+ .text.clear_pin
+                0x00000166       0x20 gpio.o
+                0x00000166                clear_pin
+ .text.read_pin
+                0x00000186       0x20 gpio.o
+                0x00000186                read_pin
+ .text.toggle_pin
+                0x000001a6       0x2e gpio.o
+                0x000001a6                toggle_pin
+                0x000001d4                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000082        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
-                0x00000082                _exit
-                0x00000082                exit
+ .fini9         0x000001d4        0x0 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
+                0x000001d4                _exit
+                0x000001d4                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -299,11 +269,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000082        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
+ .fini0         0x000001d4        0x4 c:/program files (x86)/atmel/atmel toolchain/avr8 gcc/native/3.4.1061/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.8.1/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000086                _etext = .
+                0x000001d8                _etext = .
 
-.data           0x00800100        0x0 load address 0x00000086
+.data           0x00800100        0x0 load address 0x000001d8
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -320,8 +290,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 0x00800100                PROVIDE (__bss_end, .)
-                0x00000086                __data_load_start = LOADADDR (.data)
-                0x00000086                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000001d8                __data_load_start = LOADADDR (.data)
+                0x000001d8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800060        0x0
                 0x00800060                PROVIDE (__noinit_start, .)
@@ -371,6 +341,7 @@ END GROUP
  *(.comment)
  .comment       0x00000000       0x30 avr-dev-board-gpio-example.o
                                  0x31 (size before relaxing)
+ .comment       0x00000000       0x31 gpio.o
 
 .note.gnu.build-id
  *(.note.gnu.build-id)
@@ -387,37 +358,47 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x20
+.debug_aranges  0x00000000       0x68
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x20 avr-dev-board-gpio-example.o
+ .debug_aranges
+                0x00000020       0x48 gpio.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000       0x7c
+.debug_info     0x00000000      0x45b
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000       0x7c avr-dev-board-gpio-example.o
+ .debug_info    0x00000000      0x246 avr-dev-board-gpio-example.o
+ .debug_info    0x00000246      0x215 gpio.o
 
-.debug_abbrev   0x00000000       0x46
+.debug_abbrev   0x00000000      0x1b8
  *(.debug_abbrev)
- .debug_abbrev  0x00000000       0x46 avr-dev-board-gpio-example.o
+ .debug_abbrev  0x00000000       0xd8 avr-dev-board-gpio-example.o
+ .debug_abbrev  0x000000d8       0xe0 gpio.o
 
-.debug_line     0x00000000       0x4e
+.debug_line     0x00000000      0x1f6
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000       0x4e avr-dev-board-gpio-example.o
+ .debug_line    0x00000000       0xe5 avr-dev-board-gpio-example.o
+ .debug_line    0x000000e5      0x111 gpio.o
 
-.debug_frame    0x00000000       0x24
+.debug_frame    0x00000000       0x98
  *(.debug_frame)
  .debug_frame   0x00000000       0x24 avr-dev-board-gpio-example.o
+ .debug_frame   0x00000024       0x74 gpio.o
 
-.debug_str      0x00000000      0x145
+.debug_str      0x00000000      0x1c4
  *(.debug_str)
- .debug_str     0x00000000      0x145 avr-dev-board-gpio-example.o
-                                0x179 (size before relaxing)
+ .debug_str     0x00000000      0x18b avr-dev-board-gpio-example.o
+                                0x1bf (size before relaxing)
+ .debug_str     0x0000018b       0x39 gpio.o
+                                0x1c5 (size before relaxing)
 
-.debug_loc
+.debug_loc      0x00000000      0x1f2
  *(.debug_loc)
+ .debug_loc     0x00000000       0x36 avr-dev-board-gpio-example.o
+ .debug_loc     0x00000036      0x1bc gpio.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -437,9 +418,10 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x10
+.debug_ranges   0x00000000       0x48
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x10 avr-dev-board-gpio-example.o
+ .debug_ranges  0x00000010       0x38 gpio.o
 
 .debug_macro
  *(.debug_macro)

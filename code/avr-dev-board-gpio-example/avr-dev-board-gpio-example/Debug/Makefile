@@ -38,8 +38,7 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../avr-dev-board-gpio-example.c \
-../gpio.c \
-../motor.c
+../gpio.c
 
 
 PREPROCESSING_SRCS += 
@@ -50,23 +49,19 @@ ASM_SRCS +=
 
 OBJS +=  \
 avr-dev-board-gpio-example.o \
-gpio.o \
-motor.o
+gpio.o
 
 OBJS_AS_ARGS +=  \
 avr-dev-board-gpio-example.o \
-gpio.o \
-motor.o
+gpio.o
 
 C_DEPS +=  \
 avr-dev-board-gpio-example.d \
-gpio.d \
-motor.d
+gpio.d
 
 C_DEPS_AS_ARGS +=  \
 avr-dev-board-gpio-example.d \
-gpio.d \
-motor.d
+gpio.d
 
 OUTPUT_FILE_PATH +=avr-dev-board-gpio-example.elf
 
@@ -82,8 +77,6 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-
-
 
 
 

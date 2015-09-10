@@ -6,5 +6,3 @@ avr-dev-board-gpio-example.c
 
 gpio.c
 
-motor.c
-

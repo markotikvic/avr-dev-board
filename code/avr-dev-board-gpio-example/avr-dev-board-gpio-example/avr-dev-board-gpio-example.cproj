@@ -105,12 +105,6 @@
     <Compile Include="gpio.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="motor.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="motor.h">
-      <SubType>compile</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
