@@ -15,15 +15,15 @@
 
 #define PID_CONST ((uint8_t)10)
 
-static PWM_S my_pwm;
-static PID_S my_pid;
+static volatile PWM_S my_pwm;
+static volatile PID_S my_pid;
 static volatile uint32_t timer_node_0 = 0;
 static volatile uint32_t timer_node_1 = 0;
 static volatile uint32_t timer_node_2 = 0;
 static volatile uint32_t pause_time = 0;
-static uint8_t pwm_flag = PWM_OFF;
-static uint8_t pid_flag = 0;
-static uint8_t fsm_step = 0;
+static volatile uint8_t pwm_flag = PWM_OFF;
+static volatile uint8_t pid_flag = 0;
+static volatile uint8_t fsm_step = 0;
 
 void init_timer_1(uint8_t prescaler, uint16_t topw_val)
 {
@@ -49,7 +49,7 @@ void init_timer_1(uint8_t prescaler, uint16_t topw_val)
 
 void init_pwm(PWM_S *pwm)
 {
-	my_pwm.target_port = pwm->target_port;
+	my_pwm.port = pwm->port;
 	my_pwm.pin = pwm->pin;
 	my_pwm.period = (volatile uint32_t) pwm->period;
 	my_pwm.top_val = (volatile uint32_t) pwm->top_val;
@@ -59,11 +59,8 @@ void init_pwm(PWM_S *pwm)
 
 void pwm_ref_val(uint32_t reff)
 {
-	if(reff < my_pwm.period ) {
-		my_pwm.top_val = reff;
-	} else {
-		my_pwm.top_val = my_pwm.period;
-	}
+	if(reff < my_pwm.period ) my_pwm.top_val = reff;
+	else my_pwm.top_val = my_pwm.period;
 }
 
 void stop_pwm()
@@ -205,10 +202,10 @@ ISR(TIMER1_OVF_vect)
 	if(pwm_flag == PWM_ON) {
 		my_pwm.pwm_tick++;
 		if(my_pwm.pwm_tick >= my_pwm.period && my_pwm.top_val > 0) {
-			write_pin(my_pwm.target_port, my_pwm.pin, HIGH);
+			write_pin(my_pwm.port, my_pwm.pin, HIGH);
 			my_pwm.pwm_tick = 0;
 		} else if(my_pwm.pwm_tick >= my_pwm.top_val) {
-			write_pin(my_pwm.target_port, my_pwm.pin, LOW);
+			write_pin(my_pwm.port, my_pwm.pin, LOW);
 		}
 	}
 
