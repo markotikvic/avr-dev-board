@@ -38,11 +38,11 @@ void clear_pin(volatile uint8_t *target_port, uint8_t pin_no);
 void write_pin(volatile uint8_t *target_port, uint8_t pin_no, uint8_t pin_val);
 int read_pin(volatile uint8_t *target_port, uint8_t pin_no);
 void toggle_pin(volatile uint8_t *target_port, uint8_t pin_no);
-void enable_h_bridge();
-void start_motor_CW();
-void start_motor_CCW();
-void stop_motor();
-void halt_motor();
-void disable_h_bridge();
+void enable_h_bridge(void);
+void start_motor_CW(void);
+void start_motor_CCW(void);
+void stop_motor(void);
+void halt_motor(void);
+void disable_h_bridge(void);
 
 #endif /* _GPIO_H_ */

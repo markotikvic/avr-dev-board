@@ -19,22 +19,23 @@
 
 int main()
 {
-	init_uart(UART_9600);
 	enable_h_bridge();
+	init_uart(UART_9600);
 	init_timer_1(PRESCALER8, 1000);
-	pid_setup_params(1, 0, 1, 1000);	/* pid() loops every 10ms */
-	pid_mot_direction(CCW);
-	pid_ref_val(0);
 
 	while (1) {
 		start_motor_CCW();
+		send_string("Hello World from AVR CCW!\n\r");
 		pause_loop(4000);
 		stop_motor();
-		pause_loop(4000);
+		send_string("Hello World from AVR stop!\n\r");
+		pause_loop(2000);
 		start_motor_CW();
+		send_string("Hello World from AVR CW!\n\r");
 		pause_loop(4000);
 		stop_motor();
-		pause_loop(4000);
+		send_string("Hello World from AVR stop!\n\r");
+		pause_loop(2000);
 	}
 	return 0;
 }
