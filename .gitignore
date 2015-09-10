@@ -1,2 +1,6 @@
 datasheets/
+<<<<<<< HEAD
 avr_dev_boar/avr_dev_board.atsuo
+=======
+avr_dev_board/avr_dev_board.atsuo
+>>>>>>> motor_example
