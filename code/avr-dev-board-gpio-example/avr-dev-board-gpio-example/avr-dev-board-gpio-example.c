@@ -5,13 +5,14 @@
  *  Author: marko
  */ 
 
+#define F_CPU 8000000UL
 
 #include <avr/io.h>
+#include "gpio.h"
 
 int main(void)
 {
-    while(1)
-    {
-        //TODO:: Please write your application code 
+    while(1){
+        
     }
 }
