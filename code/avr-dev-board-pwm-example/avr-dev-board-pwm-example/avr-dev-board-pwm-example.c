@@ -23,7 +23,7 @@ int main(void)
 	
 	set_pin_dir(&DDRB, GPIO_PIN0, OUTPUT);	//Postavljanje pina (na koji zelimo da prosledimo PWM signal) u izlazni rezim rada
 	
-	enable_h_bridge();
+	enable_h_bridge();						//Palimo H-most
 	
 	PWM_S pwm_init_struct;					//Stvaranje strukture za inicijalizaciju PWM-a:
 	pwm_init_struct.port = &PORTB;			//Port (mora biti isti kao i u set_pin_dir funkciji u prethodnom koraku)

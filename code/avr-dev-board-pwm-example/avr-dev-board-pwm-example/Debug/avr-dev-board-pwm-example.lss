@@ -166,7 +166,7 @@ int main(void)
  104:	90 e0       	ldi	r25, 0x00	; 0
  106:	0e 94 13 01 	call	0x226	; 0x226 <set_pin_dir>
 	
-	enable_h_bridge();
+	enable_h_bridge();						//Palimo H-most
  10a:	0e 94 78 01 	call	0x2f0	; 0x2f0 <enable_h_bridge>
 	
 	PWM_S pwm_init_struct;					//Stvaranje strukture za inicijalizaciju PWM-a:
