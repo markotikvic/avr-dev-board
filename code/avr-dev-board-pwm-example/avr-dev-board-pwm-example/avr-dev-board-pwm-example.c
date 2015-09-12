@@ -15,6 +15,7 @@
 #include <avr/io.h>
 #include "timer.h"
 #include "gpio.h"
+#include "motor.h"
 
 int main(void)
 {
@@ -22,9 +23,11 @@ int main(void)
 	
 	set_pin_dir(&DDRB, GPIO_PIN0, OUTPUT);	//Postavljanje pina (na koji zelimo da prosledimo PWM signal) u izlazni rezim rada
 	
+	enable_h_bridge();
+	
 	PWM_S pwm_init_struct;					//Stvaranje strukture za inicijalizaciju PWM-a:
 	pwm_init_struct.port = &PORTB;			//Port (mora biti isti kao i u set_pin_dir funkciji u prethodnom koraku)
-	pwm_init_struct.pin = GPIO_PIN0;		//Pin (mora biti isti kao i u set_pin_dir funkciji u prethodnom koraku)
+	pwm_init_struct.pin = GPIO_PIN1;		//Pin (mora biti isti kao i u set_pin_dir funkciji u prethodnom koraku)
 	pwm_init_struct.period = 200;			//20ms perioda
 	pwm_init_struct.top_val = 0;			//Inicijalni faktor ispune
 	init_pwm(&pwm_init_struct);				//Inicijalizacija PWM-a
