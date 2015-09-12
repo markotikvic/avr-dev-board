@@ -42,6 +42,7 @@ C_SRCS +=  \
 ../counter.c \
 ../gpio.c \
 ../motor.c \
+../pid_control.c \
 ../timer.c \
 ../uart.c \
 ../usartlib.c \
@@ -60,6 +61,7 @@ avr-dev-board-pwm-example.o \
 counter.o \
 gpio.o \
 motor.o \
+pid_control.o \
 timer.o \
 uart.o \
 usartlib.o \
@@ -71,6 +73,7 @@ avr-dev-board-pwm-example.o \
 counter.o \
 gpio.o \
 motor.o \
+pid_control.o \
 timer.o \
 uart.o \
 usartlib.o \
@@ -82,6 +85,7 @@ avr-dev-board-pwm-example.d \
 counter.d \
 gpio.d \
 motor.d \
+pid_control.d \
 timer.d \
 uart.d \
 usartlib.d \
@@ -93,6 +97,7 @@ avr-dev-board-pwm-example.d \
 counter.d \
 gpio.d \
 motor.d \
+pid_control.d \
 timer.d \
 uart.d \
 usartlib.d \
@@ -112,6 +117,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -12,6 +12,8 @@ gpio.c
 
 motor.c
 
+pid_control.c
+
 timer.c
 
 uart.c

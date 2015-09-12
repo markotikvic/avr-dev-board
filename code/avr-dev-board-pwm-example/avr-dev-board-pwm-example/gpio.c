@@ -4,12 +4,12 @@
  *  Created on: Jun 17, 2015
  *      Author: marko
  *
- * Ova biblioteka je namenjenaa za rad sa digitalnim ulazima i izlazima ATmega328P
- * mikrokontrolera kompanije Atmel. Bilbioteka pruza sledeci skup mogucnosti korisniku:
- * (Napomena: sve makro definicije biblioteke se nalaze u datoteci gpio.h)
+ *  Ova biblioteka je namenjenaa za rad sa digitalnim ulazima i izlazima ATmega328P
+ *  mikrokontrolera kompanije Atmel. Bilbioteka pruza sledeci skup mogucnosti korisniku:
+ *  (Napomena: sve makro definicije biblioteke se nalaze u datoteci gpio.h)
  *
- * 1. Postavljanje pina kontrolera u rezimu rada ulaza ili izlaza
- *     - Upotreba:
+ *  1. Postavljanje pina kontrolera u rezimu rada ulaza ili izlaza
+ *      - Upotreba:
  *
  *        set_pin_dir(DDRx, GPIO_PINx, DIRECTION); gde je:
  *
@@ -22,8 +22,8 @@
  *
  *        - Funckija nema povratnu vrednost
  *
- * 2. Postavljanje naponskog nivoa pina kontrolera na visok logicki nivo
- *     - Upotreba:
+ *  2. Postavljanje naponskog nivoa pina kontrolera na visok logicki nivo
+ *      - Upotreba:
  *
  *        set_pin(PORTx, GPIO_PINx); gde je:
  *
@@ -32,11 +32,11 @@
  *
  *        - Funckija nema povratnu vrednost
  *
- * Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
- * postavljen u izlaznom rezimu rada.
+ *  Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
+ *  postavljen u izlaznom rezimu rada.
  *
- * 3. Postavljanje naponskog nivoa pina kontrolera na nizak logicki nivo
- *     - Upotreba:
+ *  3. Postavljanje naponskog nivoa pina kontrolera na nizak logicki nivo
+ *      - Upotreba:
  *
  *        clear_pin(PORTx, GPIO_PINx); gde je:
  *
@@ -45,11 +45,11 @@
  *
  *        - Funckija nema povratnu vrednost
  *
- * Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
- * postavljen u izlaznom rezimu rada.
+ *  Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
+ *  postavljen u izlaznom rezimu rada.
  *
- * 4. Postavljanje naponskog nivoa pina kontrolera na visok ili nizak logicki nivo
- *     - Upotreba:
+ *  4. Postavljanje naponskog nivoa pina kontrolera na visok ili nizak logicki nivo
+ *      - Upotreba:
  *
  *        write_pin(PORTx, GPIO_PINx, VALUE); gde je:
  *
@@ -60,11 +60,11 @@
  *
  *        - Funckija nema povratnu vrednost
  * 
- * Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
- * postavljen u izlaznom rezimu rada.
+ *  Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
+ *  postavljen u izlaznom rezimu rada.
  *
- * 5. Invertovanje naponskog nivoa pina kontrolera
- *     - Upotreba:
+ *  5. Invertovanje naponskog nivoa pina kontrolera
+ *      - Upotreba:
  *
  *        toggle_pin(PORTx, GPIO_PINx); gde je:
  *
@@ -73,11 +73,11 @@
  *
  *        - Funckija nema povratnu vrednost
  *
- * Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
- * postavljen u izlaznom rezimu rada.
+ *  Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
+ *  postavljen u izlaznom rezimu rada.
  *
- * 6. Ocitavanje stanja pina kontrolera
- *     - Upotreba:
+ *  6. Ocitavanje stanja pina kontrolera
+ *      - Upotreba:
  *
  *        read_pin(PORTx, GPIO_PINx); gde je:
  *
@@ -86,8 +86,8 @@
  *
  *        - Ukoliko je stanje pina logicka "1" funkcija vraca 1
  *        - Ukoliko je stanje pina logicka "0" funkcija vraca 0.
- * Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
- * postavljen u ulaznom rezimu rada.
+ *  Napomena: da bi ova funkcija ispravno radila ciljani pin kontrolera mora biti
+ *  postavljen u ulaznom rezimu rada.
  *
  */
 

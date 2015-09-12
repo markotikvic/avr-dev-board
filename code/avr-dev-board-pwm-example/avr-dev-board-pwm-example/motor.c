@@ -50,6 +50,7 @@
  *
  *    - Funkcija ne prima ulazne parametre i nema povratnu vrednost
  */ 
+
 #include "motor.h"
 
 void enable_h_bridge()

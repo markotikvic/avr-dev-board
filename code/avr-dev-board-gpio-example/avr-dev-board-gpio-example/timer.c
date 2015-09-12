@@ -3,6 +3,78 @@
  *
  *  Created on: Jun 17, 2015
  *      Author: marko
+ *      
+ *  Ova biblioteka je namenjena za rad sa 16-bitnim tajmerom 1 ATmega328P
+ *  mikrokontrolera kompanije Atmel. Bilbioteka pruza sledeci skup mogucnosti korisniku:
+ *  (Napomena: sve makro definicije biblioteke se nalaze u datoteci timer.h)
+ *  
+ *  1. Incijalizacija tajmera 1
+ *	    - Upotreba:
+ *	   
+ *			init_timer_1(PRESCALER, TOP_VAL); gde je:
+ *			
+ *				a) PRESCALER - preskaler osnovne frekvencie kontrolera (F_CPU)
+ *				b) TOP_VAL - broj broj ciklusa koji tajmer treba da odbroji pre
+ *				   nego sto udje u prekidnu rutinu ISR(TIMER1_OVF_vect)
+ *			
+ *			- Funckija nema povratnu vrednost
+ *      
+ *  2. Prosledjivanje PWM signala na neki od pinova mikrokontrolera
+ *      - Upotreba:
+ *		
+ *			init_pwm(PWM_INIT_STRUCT); gde je:
+ *			
+ *				a) PWM_INIT_STRUCT - struktura tipa PWM_S (definisano u timer.h) sa sledecim poljima
+ *					a.1) port (volatile uint8_t *) - port na kojem se nalazi pin na koji zelimo da prosledimo signal.
+ *							Moze imati sledece vrednosti: &PORTB, &PORTC, &PORTD.
+ *					a.2) pin (uint8_t) - pin na koji zelimo da prosledimo signal.
+ *							Moze imati sledece vrednosti: GPIO_PINx (x = 0...7)
+ *					a.3) period (uint32_t) - zeljena perioda PWM signala (zadata u broju ciklusa tajmera 1)
+ *					a.4) top_val (uint32_t) - inicijalni faktor ispune PWM signala (zadat u broju ciklusa tajmera 1)
+ *					a.5) pwm_tick (uint32_t) - biblioteka ignorise vrednost ovog parametra
+ *					
+ *			- Funckija nema povratnu vrednost
+ *      
+ *  3. Promena faktora ispune PWM signala
+ *		- Upotreba:
+ *			
+ *			pwm_ref_val(REFF); gde je:
+ *				
+ *				a) REFF - faktor ispune PWM signala (zadat u broju ciklusa tajmera 1)
+ *				
+ *			- Funckija nema povratnu vrednost
+ *      
+ *  4. Paljenje/gasenje PWM signala:
+ *		- Upotreba:
+ *			
+ *			start_pwm(); pokrece prosledjivanje PWM signala na prethodno podesen pin kontroleras
+ *			- Funckija nema povratnu vrednost
+ *			
+ *			stop_pwm(); zaustavlja prosledjivanje PWM signala
+ *			- Funckija nema povratnu vrednost
+ *
+ *      
+ *  5. Proveru stanja vremenskog brojaca    
+ *		- Upotreba:
+ *		
+ *			set_timer(N); gde je:
+ *			
+ *				a) N - indeks brojaca koji zelimo da podesimo
+ *			
+ *			- Funckija nema povratnu vrednost
+ *			
+ *			get_timer(N); gde je:
+ *			
+ *				a) N - indeks brojaca koji zelimo da podesimo
+ *				
+ *			- Funckija vraca trenutnu vrednost brojaca (uint32_t)
+ *			
+ *	6. Unos kasnjenja u kod
+ *		- Upotreba:
+ *			
+ *			pause_loop(TIME); gde je:
+ *			
+ *				a) TIME - zeljeno kasnjenje (zadato u broju ciklusa tajmera 1)
  */
 
 #include <avr/interrupt.h>
@@ -13,29 +85,25 @@
 #include "util.h"
 #include "motor.h"
 
-#define PID_CONST ((uint8_t)10)
-
-static PWM_S my_pwm;
-static PID_S my_pid;
+static volatile PWM_S my_pwm;
 static volatile uint32_t timer_node_0 = 0;
 static volatile uint32_t timer_node_1 = 0;
 static volatile uint32_t timer_node_2 = 0;
 static volatile uint32_t pause_time = 0;
-static uint8_t pwm_flag = PWM_OFF;
-static uint8_t pid_flag = 0;
-static uint8_t fsm_step = 0;
+static volatile uint8_t pwm_flag = PWM_OFF;
+static volatile uint8_t fsm_step = 0;
 
 void init_timer_1(uint8_t prescaler, uint16_t topw_val)
 {
 	uint16_t temp;
 
 	temp = 0;
-	temp |= (1 << WGM10 | 1 << WGM11); /* Fast PWM mode - TOP is OCR1A, auto restart. */
+	temp |= (1 << WGM10 | 1 << WGM11);	/* Fast PWM mode - TOP is OCR1A, auto restart. */
 	TCCR1A = temp;
 
 	temp = 0;
-	temp |= (1 << WGM12 | 1 << WGM13); /* Fast PWM mode - TOP is OCR1A, auto restart. */
-	temp |= (prescaler << CS10); /* CS2:0 = 010 - Prescaler set to 8. */
+	temp |= (1 << WGM12 | 1 << WGM13);	/* Fast PWM mode - TOP is OCR1A, auto restart. */
+	temp |= (prescaler << CS10);		/* CS2:0 = 010 - Prescaler set to 8. */
 	TCCR1B = temp;
 
 	temp = 0;
@@ -49,7 +117,7 @@ void init_timer_1(uint8_t prescaler, uint16_t topw_val)
 
 void init_pwm(PWM_S *pwm)
 {
-	my_pwm.target_port = pwm->target_port;
+	my_pwm.port = pwm->port;
 	my_pwm.pin = pwm->pin;
 	my_pwm.period = (volatile uint32_t) pwm->period;
 	my_pwm.top_val = (volatile uint32_t) pwm->top_val;
@@ -59,11 +127,8 @@ void init_pwm(PWM_S *pwm)
 
 void pwm_ref_val(uint32_t reff)
 {
-	if(reff < my_pwm.period ) {
-		my_pwm.top_val = reff;
-	} else {
-		my_pwm.top_val = my_pwm.period;
-	}
+	if(reff < my_pwm.period ) my_pwm.top_val = reff;
+	else my_pwm.top_val = my_pwm.period;
 }
 
 void stop_pwm()
@@ -74,66 +139,6 @@ void stop_pwm()
 void start_pwm()
 {
 	pwm_flag = PWM_ON;
-}
-
-void pid_setup_params(float kp, float ki, float kd, uint16_t sample_period)
-{
-	my_pid.kp = kp;
-	my_pid.ki = ki;
-	my_pid.kd = kd;
-	my_pid.sample_period = sample_period;
-	my_pid.sample_peiod_opt = 1 / sample_period;
-	my_pid.pwm_period = 200; 	//20ms for motors
-
-	enable_counter();
-	init_timer_1(PRESCALER8, 100);	/* 0.1 ms */
-	enable_h_bridge();
-}
-
-void pid_ref_val(uint16_t ref_speed)
-{
-	my_pid.ref_speed = ref_speed;
-	pid_flag = 1;
-}
-
-void pid_mot_direction(uint8_t mot_dir)
-{
-	my_pid.dir = mot_dir;
-}
-
-void pid()
-{
-	long count = get_count();
-	int temp = 0;
-	/* Speed difference. */
-	my_pid.err = my_pid.ref_speed - (uint16_t)(count - my_pid.last_count);
-
-	/* Error sum. */
-	my_pid.err_sum += my_pid.err;
-	if(my_pid.err_sum > 200) {
-		my_pid.err_sum = 200;
-	}
-
-	/* Error difference. */
-	my_pid.err_diff = my_pid.err - my_pid.last_err;
-
-	/* PID output */
-	temp = (my_pid.kp*my_pid.err + my_pid.ki*my_pid.err_sum + my_pid.kd*my_pid.err_diff)/PID_CONST;
-	if(temp > my_pid.pwm_period) {
-		my_pid.pwm_top_val = my_pid.pwm_period;
-	} else {
-		my_pid.pwm_top_val = temp;
-	}
-
-	/* Memorize last values. */
-	my_pid.last_count = count;
-	my_pid.last_err = my_pid.err;
-}
-
-
-void stop_pid_control()
-{
-	pid_flag = PID_OFF;
 }
 
 void set_timer(uint8_t timer_num, uint32_t time)
@@ -170,7 +175,7 @@ void pause_loop(uint16_t pause)
 	while(pause_time);
 }
 
-void therads_loop_example()
+void threads_loop_example()
 {
 	switch(fsm_step){
 	case 0:
@@ -205,38 +210,12 @@ ISR(TIMER1_OVF_vect)
 	if(pwm_flag == PWM_ON) {
 		my_pwm.pwm_tick++;
 		if(my_pwm.pwm_tick >= my_pwm.period && my_pwm.top_val > 0) {
-			write_pin(my_pwm.target_port, my_pwm.pin, HIGH);
+			set_pin(my_pwm.port, my_pwm.pin);
 			my_pwm.pwm_tick = 0;
 		} else if(my_pwm.pwm_tick >= my_pwm.top_val) {
-			write_pin(my_pwm.target_port, my_pwm.pin, LOW);
+			clear_pin(my_pwm.port, my_pwm.pin);
 		}
 	}
-
-	if(pid_flag == 1) {
-		my_pid.pid_tick_sample++;
-		if(my_pid.pid_tick_sample >= my_pid.sample_period) {
-			my_pid.pid_tick_sample = 0;
-			pid();
-		}
-
-		my_pid.pid_pwm_tick++;
-		if(my_pid.pid_pwm_tick >= my_pid.pwm_period && my_pid.pwm_top_val > 0) {
-			my_pid.pid_pwm_tick = 0;
-
-			if(my_pid.dir == CW) {
-				MOT_PORT |= (1 << MOT_PIN0);
-			} else if(my_pid.dir == CCW) {
-				MOT_PORT |= (1 << MOT_PIN1);
-			}
-		} else if (my_pid.pid_pwm_tick >= my_pid.pwm_top_val) {
-			if(my_pid.dir == CW) {
-				MOT_PORT &= ~(1 << MOT_PIN0);
-			} else if(my_pid.dir == CCW) {
-				MOT_PORT &= ~(1 << MOT_PIN1);
-			}
-		}
-	}
-
 
 	if(timer_node_0 > 0) timer_node_0--;
 	if(timer_node_1 > 0) timer_node_1--;
