@@ -3,6 +3,30 @@
  *
  *  Created on: Jun 29, 2015
  *      Author: marko
+ *  
+ *  Ova biblioteka je namenja za rad sa optickim rotacionim
+ *  enkoderom ISC3806. Bilbioteka pruza sledeci skup mogucnosti korisniku:
+ *  (Napomena: sve makro definicije biblioteke se nalaze u datoteci counter.h)
+ *  
+ *  1. Omogucavanje spoljasnjih perkida na kontroleru na predefinisanim pinovima
+ *     za rad sa ISC3806 enkoderom:
+ *		- Upotreba:
+ *			
+ *			enable_counter();
+ *			
+ *			- Funkcija nema povratnu vrednost
+ *			
+ *	2. Pribavljanje informacije o sumi koraka koje je enkoder napravio
+ *		- Upotreba:
+ *			
+ *			get_count();
+ *			
+ *			- Funkcija vraca sumu (long) koraka koje je enkoder napravio.
+ *			  Suma se uvecava za CW smer, a umanjuje za CCW smer.
+ *	
+ *	Napomena: da bi ova funkcija ispravno radila, pre njene upotrebe u kodu mora postojati
+ *	poziv f-je enable_counter.
+ *	
  */
 
 
@@ -29,6 +53,6 @@ long get_count()
 
 ISR(INT1_vect)
 {
-	if( EXT_PORT & (1 << EXT_CH_A) ) counts--;			/* CCW */
-	else if( !(EXT_PORT & (1 << EXT_CH_A)) ) counts++;	/* CW */
+	if( EXT_PORT & (1 << EXT_CH_A) ) counts--;	/* CCW */
+	else counts++;								/* CW */
 }

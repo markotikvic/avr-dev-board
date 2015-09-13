@@ -17,12 +17,6 @@
 #define HIGH ((uint8_t)1)
 #define LOW ((uint8_t)0)
 
-#define MOT_DDR		DDRB
-#define MOT_PORT	PORTB
-#define MOT_EN		GPIO_PIN0
-#define MOT_PIN0	GPIO_PIN1
-#define MOT_PIN1 	GPIO_PIN2
-
 #define GPIO_PIN0 ((uint8_t)0)
 #define GPIO_PIN1 ((uint8_t)1)
 #define GPIO_PIN2 ((uint8_t)2)
@@ -38,11 +32,5 @@ void clear_pin(volatile uint8_t *target_port, uint8_t pin_no);
 void write_pin(volatile uint8_t *target_port, uint8_t pin_no, uint8_t pin_val);
 int read_pin(volatile uint8_t *target_port, uint8_t pin_no);
 void toggle_pin(volatile uint8_t *target_port, uint8_t pin_no);
-void enable_h_bridge(void);
-void start_motor_CW(void);
-void start_motor_CCW(void);
-void stop_motor(void);
-void halt_motor(void);
-void disable_h_bridge(void);
 
 #endif /* _GPIO_H_ */

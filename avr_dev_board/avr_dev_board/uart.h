@@ -17,11 +17,9 @@
 
 void init_uart(uint8_t baud);
 void send_char(char c);
-void send_one_char(char a);
 void send_string(char *str);
 void get_buffer(char *dest, uint8_t size);
-void clear_buffer(void);
-void analyze_uart(void);
-void interpret_uart(char *temp);
+void clear_buffer();
+void analyze_uart();
 
 #endif /* _UART_H_ */

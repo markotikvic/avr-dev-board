@@ -6,8 +6,6 @@
  */
 
 #include "uart.h"
-#include "util.h"
-#include "stdlib.h"
 #include <string.h>
 #include <avr/interrupt.h>
 
@@ -16,97 +14,61 @@ static volatile char uart0_sent;
 static volatile char uart0_received;
 static volatile uint8_t uart0_index;
 
-/*	Inicijalizacija uarta	*/
 void init_uart(uint8_t baud)
 {
-	// Inicijalizacija promenljivih
 	uart0_sent = 0;
 	uart0_received = 0;
 	uart0_index = 0;
 	uart0_buff[uart0_index] = '\0';
-
-	// Postavljanje smera pinovima
-	SBIT(DDRD, 1);
-	CBIT(DDRD, 0);
-
-	// Inicijalizacija registara za komunikaciju
 	UCSR0B |= (1 << RXEN0 | 1 << TXEN0 | 1 << RXCIE0);
 	UCSR0C |= (1 << UCSZ00 | 1 << UCSZ00);
 	UBRR0 = baud;
 	
-	// Globalna dozvola prekida
 	sei();
 }
 
-/*	Slanje jednog bajta	*/
 void send_char(char c)
 {
-	uart0_sent = 0;		// Resetovanje promenljive
-	UDR0 = c;			// Upis bajta u registar
-	while (!(UCSR0A & (1 << UDRE0)));	// Cekanje potvrde da je bajt poslat
+	uart0_sent = 0;
+	UDR0 = c;
+	while (!(UCSR0A & (1 << UDRE0)));
 }
 
-/*	Slanje broja velicine 1 bajt	*/
-void send_one_char(char a)
-{
-	char temp_answer [4];	// Cuva string koji ce biti poslat
-	char temp_str[4];		// Cuva string koji oznacava vrednost bajta
-	
-	temp_answer[0] = '\0';	// Inicijalizacija
-	
-	itoa(a, temp_str, 10);	// Pretvaranje iz broja u string
-	strcat(temp_answer, temp_str);	// Kopiranje broja (string-a)
-	strcat(temp_answer, "\r\n");	// Finisiranje stringa
-
-	send_string((char*) temp_answer);	// Slanje stringa
-}
-
-/*	Slanje stringa	*/
 void send_string(char *str)
 {
-	while (*str != '\0') {	// Slanje jednog po jednog bajta dok se ne dodje do terminatora (nula)
+	while (*str != '\0') {
 		send_char(*str);
 		str++;
 	}
 }
 
-/*	Kopiranje uart bafera	*/
 void get_buffer(char *dest, uint8_t size)
 {
 	int i = 0;
-	while(i < size && uart0_buff[i] != '\0') {	// Kopiranje bafera dok se ne dodje do kraja string-a
+	while(i < size && uart0_buff[i] != '\0') {
 		(*dest) = uart0_buff[i];
 		dest++;
 		i++;
 	}
-	*dest = '\0';	// Zatvaranje stringa terminatorom
+	*dest = '\0';
 }
 
-/*	Ciscenje uart bafera	*/
-void clear_buffer(void)
+void clear_buffer()
 {
 	uart0_index = 0;
 	uart0_buff[uart0_index] = '\0';
 }
 
-/*	Ciscenje uart bafera	*/
-void analyze_uart(void)
+void analyze_uart()
 {
 	if (uart0_received) {
 		char temp[256];
 
 		uart0_received = 0;
 		get_buffer(temp, uart0_index);
-		interpret_uart(temp);	//Korisnicka funkcija u kojoj se vrsi obrada dobijene komande
+		send_string(temp);
 		clear_buffer();
 	}
-}
-
-/*	Obrada pristigle komande	*/
-/*	Napomena: ovde uneti korisnicki kod	*/
-void interpret_uart(char *temp)
-{
-	send_string(temp);	// Echo - vracanje dobijene komande nazad
 }
 
 //ISR(USART_TX_vect)
@@ -114,7 +76,6 @@ void interpret_uart(char *temp)
 //	uart0_sent = 1;
 //}
 
-/*	Prekidna rutina za obradu primljenog bajta	*/
 ISR(USART_RX_vect)
 {
 	char temp;
@@ -125,10 +86,11 @@ ISR(USART_RX_vect)
 		uart0_buff[uart0_index] = temp;
 		uart0_buff[uart0_index + 1] = '\0';
 		uart0_index++;
-		if (temp == '\0' || temp == '\n' || temp == '\r') {	// Ovi znakovi oznacavaju kraj string-a
-			uart0_received = 1;	// Stigao je podatak -> setuj fleg za interpretaciju
+		if (temp == '\0' || temp == '\n' || temp == '\r') {
+			uart0_received = 1;
 		}
 	} else {
-		clear_buffer();	// Ciscenje bafera ako je prepunjen
+		/* Wait for buffer to be cleared. */
+		clear_buffer();	
 	}
 }
