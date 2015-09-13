@@ -881,16 +881,16 @@ END GROUP
  .debug_abbrev  0x000005d9      0x1d8 timer.o
  .debug_abbrev  0x000007b1      0x144 uart.o
 
-.debug_line     0x00000000      0x9b9
+.debug_line     0x00000000      0x9ba
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000       0xe4 adc.o
  .debug_line    0x000000e4      0x12c avr-dev-board-pid-example.o
  .debug_line    0x00000210       0xe7 counter.o
  .debug_line    0x000002f7      0x111 gpio.o
  .debug_line    0x00000408      0x118 motor.o
- .debug_line    0x00000520      0x17d pid_control.o
- .debug_line    0x0000069d      0x1db timer.o
- .debug_line    0x00000878      0x141 uart.o
+ .debug_line    0x00000520      0x17e pid_control.o
+ .debug_line    0x0000069e      0x1db timer.o
+ .debug_line    0x00000879      0x141 uart.o
 
 .debug_frame    0x00000000      0x508
  *(.debug_frame)

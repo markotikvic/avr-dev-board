@@ -3,6 +3,10 @@
  *
  * Created: 13-Sep-15 14:43:05
  *  Author: marko
+ *  
+ *  Primer pozicone regulacije upotrebom ISC3806 enkodera i L298N H-mosta.
+ *  (Sve unutar while(1) petlje je dodatak kako bi se povratna informacija o
+ *  trenutnom stanju pozicije enkodera i nije neophodno za pravilan rad biblioteke.)
  */ 
 
 

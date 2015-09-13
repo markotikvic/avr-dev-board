@@ -8,43 +8,6 @@
  *  Bilbioteka pruza sledeci skup mogucnosti korisniku:
  *  (Napomena: sve makro definicije biblioteke se nalaze u datoteci pid_control.h)
  *  
- *  1. Zadavanje koeficijenata PID regulatora (ova funkcija istovremeno vodi racuna
- *		i o podesavanju H-mosta, neophodnog za rad motora, i podesavanju kontrole\
- *		spoljasnjih prekida za rad sad enkoderom)
- *		- Upotreba:
- *			
- *			pid_setup_params(Kp, Ki, Kd); gde je:
- *			
- *				a) Kp - pojacanje propocionalnog dejstva regulatora
- *				b) Ki - pojacanje integralnog dejstva regulatora
- *				c) Kd - pojacanje diferencijalnog dejstva regulatora
- *			
- *			- Funkcija nema povratnu vrednost
- *	
- *	2. Pokretanje i zaustavljanje regulacije
- *		- Upotreba:
- *			
- *			start_pid_control(); pokrece regulaciju
- *			
- *			- Funkcija nema povratnu vrednost
- *			
- *			stop_pid_control(); zaustavlja regulaciju
- *			
- *			- Funkcija nema povratnu vrednost
- *			
- *	3. Zadavanje referente vrednosti regulacije
- *		- Upotreba:
- *		
- *			pid_ref_val(VALUE); gde je:
- *				
- *				a) VALUE - referentna vrednost regulacije
- *				
- *			- Funkcija nema povratnu vrednost
- *			
- *	Napomena: vrsta regulacije realizovana u primeru je poziciona. Ukoliko
- *	regulacija treba da se vrsi na nivou prvog izvoda pozicije potrebno je prepraviti
- *	vrstu greske u pid() funkciji.
- *	
  */ 
 
 #include "pid_control.h"
