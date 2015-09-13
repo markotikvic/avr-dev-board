@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "avr-dev-board-motor-example", "avr-dev-board-motor-example\avr-dev-board-motor-example.cproj", "{EE8DBF40-E546-45A1-BB8D-5ADB48642540}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE8DBF40-E546-45A1-BB8D-5ADB48642540}.Debug|AVR.ActiveCfg = Debug|AVR
+		{EE8DBF40-E546-45A1-BB8D-5ADB48642540}.Debug|AVR.Build.0 = Debug|AVR
+		{EE8DBF40-E546-45A1-BB8D-5ADB48642540}.Release|AVR.ActiveCfg = Release|AVR
+		{EE8DBF40-E546-45A1-BB8D-5ADB48642540}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -15,7 +15,8 @@
     <AssemblyName>avr_dev_board</AssemblyName>
     <Name>avr_dev_board</Name>
     <RootNamespace>avr_dev_board</RootNamespace>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>

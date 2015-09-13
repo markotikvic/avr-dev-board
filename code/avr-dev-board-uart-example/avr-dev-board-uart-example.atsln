@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "avr-dev-board-uart-example", "avr-dev-board-uart-example\avr-dev-board-uart-example.cproj", "{32589224-8049-4B4A-9E2E-3E404F309033}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32589224-8049-4B4A-9E2E-3E404F309033}.Debug|AVR.ActiveCfg = Debug|AVR
+		{32589224-8049-4B4A-9E2E-3E404F309033}.Debug|AVR.Build.0 = Debug|AVR
+		{32589224-8049-4B4A-9E2E-3E404F309033}.Release|AVR.ActiveCfg = Release|AVR
+		{32589224-8049-4B4A-9E2E-3E404F309033}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
