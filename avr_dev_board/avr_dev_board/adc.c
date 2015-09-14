@@ -3,6 +3,31 @@
  *
  *  Created on: Jun 21, 2015
  *      Author: marko
+ *      
+ *  Ova biblioteka je namenjenaa za rad sa A/D konverzijom ATmega328P
+ *  mikrokontrolera kompanije Atmel. Bilbioteka pruza sledeci skup mogucnosti korisniku:
+ *  (Napomena: sve makro definicije biblioteke se nalaze u datoteci adc.h)
+ *  
+ *  1. Inicijalizaciju A/D konvertora
+ *		- Upotreba:
+ *		
+ *			init_adc();
+ *			
+ *		- Funkciaj nema povratnu vrednost
+ *		
+ *	2. Ocitavanje poslednjeg rezultata koverzije
+ *		- Upotreba:
+ *		
+ *			get_adc_result();
+ *			
+ *		- Povratna vrednost funkcije je rezultat poslednje konverzije (int).
+ *		
+ *	3. Zapocinjanje novog ciklusa konverzije
+ *		- Upotreba:
+ *		
+ *			start_new_adc();
+ *			
+ *		- Funkcija nema povratnu vrednost.
  */
 
 #include <avr/io.h>
