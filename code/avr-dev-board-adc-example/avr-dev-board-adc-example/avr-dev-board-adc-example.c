@@ -22,11 +22,11 @@ int main(void)
 	init_timer_1(PRESCALER8, 1000);
 	set_pin_dir(&DDRD, GPIO_PIN5, OUTPUT);
 	init_adc();
-	start_new_adc();
 	
     while(1){
+	    start_new_adc();
+		pause_loop(50);
 		if(get_adc_result() > 300) set_pin(&PORTB, GPIO_PIN5);
 		else clear_pin(&PORTB, GPIO_PIN5);
-		pause_loop(1000);
     }
 }

@@ -7,7 +7,7 @@
  *  Primer upotrebe counter.h biblioteke:
  *		Na svaku sekundu kontroler putem UART komunikacije salje trenutno stanje
  *		brojaca. Pre slanja, podatak moramo pretvoriti iz tipa long u tip char*
- *		upotrebom spintf funkcije koja se nalazi u stdio.h biblioteci.
+ *		upotrebom sprintf funkcije koja se nalazi u stdio.h biblioteci.
  */ 
 
 #include <avr/io.h>
