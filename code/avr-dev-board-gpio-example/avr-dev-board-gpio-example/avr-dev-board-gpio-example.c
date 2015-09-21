@@ -26,13 +26,13 @@ int main(void)
 	uint8_t toggle_flag = 0;
 	
     while(1){
-		if(read_pin(&PORTD, GPIO_PIN6)) set_pin(&PORTB, GPIO_PIN3);	//Ukoliko je pritisnut taster na pinu PD6 upali diodu na pinu PB3
-		else  clear_pin(&PORTB, GPIO_PIN3);							//u suprotnom je ugasi
+		if(!read_pin(&PORTD, GPIO_PIN6)) set_pin(&PORTB, GPIO_PIN3);	//Ukoliko je pritisnut taster na pinu PD6 upali diodu na pinu PB3
+		else clear_pin(&PORTB, GPIO_PIN3);							//u suprotnom je ugasi
 		
-		if(read_pin(&PORTD, GPIO_PIN7) && !toggle_flag){			//Svaki put kada je pritisnut taster na pinu PD7 promeni stanje pina PB4
+		if(!read_pin(&PORTD, GPIO_PIN7) && !toggle_flag){			//Svaki put kada je pritisnut taster na pinu PD7 promeni stanje pina PB4
 			toggle_pin(&PORTB, GPIO_PIN4);
 			toggle_flag = 1;
-		} else {
+		} else if(read_pin(&PORTD, GPIO_PIN7)){
 			toggle_flag = 0;
 		}  
     }

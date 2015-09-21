@@ -12133,6 +12133,7 @@ grid 15mm, 19649 Wickmann</description>
 <pinref part="C6" gate="G$1" pin="1"/>
 <wire x1="91.44" y1="86.36" x2="91.44" y2="91.44" width="0.1524" layer="91"/>
 <junction x="91.44" y="91.44"/>
+<junction x="76.2" y="91.44"/>
 </segment>
 </net>
 <net name="SCK" class="0">
@@ -12268,6 +12269,8 @@ grid 15mm, 19649 Wickmann</description>
 <wire x1="149.86" y1="99.06" x2="149.86" y2="104.14" width="0.1524" layer="91"/>
 <junction x="149.86" y="104.14"/>
 <label x="149.86" y="104.14" size="1.778" layer="95"/>
+<junction x="149.86" y="93.98"/>
+<junction x="149.86" y="99.06"/>
 </segment>
 </net>
 <net name="XTAL2" class="0">
@@ -12286,6 +12289,8 @@ grid 15mm, 19649 Wickmann</description>
 <wire x1="165.1" y1="99.06" x2="165.1" y2="104.14" width="0.1524" layer="91"/>
 <junction x="165.1" y="104.14"/>
 <label x="165.1" y="104.14" size="1.778" layer="95"/>
+<junction x="165.1" y="93.98"/>
+<junction x="165.1" y="99.06"/>
 </segment>
 </net>
 <net name="MOT+" class="0">
@@ -12319,18 +12324,6 @@ grid 15mm, 19649 Wickmann</description>
 <pinref part="D5" gate="1" pin="A"/>
 <wire x1="200.66" y1="165.1" x2="200.66" y2="162.56" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-</segment>
-</net>
-<net name="N$5" class="0">
-<segment>
-<pinref part="ENC" gate="-3" pin="S"/>
-<junction x="287.02" y="20.32"/>
-</segment>
-</net>
-<net name="N$6" class="0">
-<segment>
-<pinref part="ENC" gate="-9" pin="S"/>
-<junction x="287.02" y="12.7"/>
 </segment>
 </net>
 <net name="N$7" class="0">

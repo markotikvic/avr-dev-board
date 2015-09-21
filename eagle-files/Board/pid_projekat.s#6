@@ -12326,12 +12326,6 @@ grid 15mm, 19649 Wickmann</description>
 <pinref part="R2" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$7" class="0">
-<segment>
-<pinref part="ENC" gate="-10" pin="S"/>
-<junction x="307.34" y="12.7"/>
-</segment>
-</net>
 <net name="VS" class="0">
 <segment>
 <pinref part="D2" gate="1" pin="C"/>
@@ -12402,12 +12396,6 @@ grid 15mm, 19649 Wickmann</description>
 <pinref part="C8" gate="G$1" pin="2"/>
 <pinref part="IC5" gate="G$1" pin="C2-"/>
 <wire x1="68.58" y1="17.78" x2="81.28" y2="17.78" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$9" class="0">
-<segment>
-<pinref part="ENC" gate="-2" pin="S"/>
-<junction x="307.34" y="22.86"/>
 </segment>
 </net>
 <net name="N$1" class="0">
