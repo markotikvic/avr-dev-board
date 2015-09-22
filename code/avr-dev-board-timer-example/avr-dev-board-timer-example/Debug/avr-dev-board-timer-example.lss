@@ -21,9 +21,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_str    00000527  00000000  00000000  0000352c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00000aae  00000000  00000000  00003a53  2**0
+  9 .debug_loc    00000aaf  00000000  00000000  00003a53  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 00000160  00000000  00000000  00004501  2**0
+ 10 .debug_ranges 00000160  00000000  00000000  00004502  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -958,8 +958,8 @@ void set_timer(uint8_t timer_num, uint32_t time)
 	switch(timer_num) {
 	case 0:
 		timer_node_0 = time;
- 71c:	8a ef       	ldi	r24, 0xFA	; 250
- 71e:	90 e0       	ldi	r25, 0x00	; 0
+ 71c:	84 ec       	ldi	r24, 0xC4	; 196
+ 71e:	99 e0       	ldi	r25, 0x09	; 9
  720:	a0 e0       	ldi	r26, 0x00	; 0
  722:	b0 e0       	ldi	r27, 0x00	; 0
  724:	80 93 53 01 	sts	0x0153, r24
@@ -970,7 +970,7 @@ void set_timer(uint8_t timer_num, uint32_t time)
 	case 0:
 		if(!get_timer(0)) {
 			toggle_pin(&PORTD, GPIO_PIN6);
-			set_timer(0, 250);
+			set_timer(0, 2500);
 			pause_loop(1);
  734:	81 e0       	ldi	r24, 0x01	; 1
  736:	90 e0       	ldi	r25, 0x00	; 0
@@ -1011,8 +1011,8 @@ void set_timer(uint8_t timer_num, uint32_t time)
 		break;
 	case 1:
 		timer_node_1 = time;
- 766:	84 ef       	ldi	r24, 0xF4	; 244
- 768:	91 e0       	ldi	r25, 0x01	; 1
+ 766:	88 e8       	ldi	r24, 0x88	; 136
+ 768:	93 e1       	ldi	r25, 0x13	; 19
  76a:	a0 e0       	ldi	r26, 0x00	; 0
  76c:	b0 e0       	ldi	r27, 0x00	; 0
  76e:	80 93 4f 01 	sts	0x014F, r24
@@ -1023,7 +1023,7 @@ void set_timer(uint8_t timer_num, uint32_t time)
 	case 1:
 		if(!get_timer(1)) {
 			toggle_pin(&PORTD, GPIO_PIN5);
-			set_timer(1, 500);
+			set_timer(1, 5000);
 			pause_loop(1);
  77e:	81 e0       	ldi	r24, 0x01	; 1
  780:	90 e0       	ldi	r25, 0x00	; 0
@@ -1064,8 +1064,8 @@ void set_timer(uint8_t timer_num, uint32_t time)
 		break;
 	case 2:
 		timer_node_2 = time;
- 7b0:	88 ee       	ldi	r24, 0xE8	; 232
- 7b2:	93 e0       	ldi	r25, 0x03	; 3
+ 7b0:	80 e1       	ldi	r24, 0x10	; 16
+ 7b2:	97 e2       	ldi	r25, 0x27	; 39
  7b4:	a0 e0       	ldi	r26, 0x00	; 0
  7b6:	b0 e0       	ldi	r27, 0x00	; 0
  7b8:	80 93 4b 01 	sts	0x014B, r24
@@ -1076,7 +1076,7 @@ void set_timer(uint8_t timer_num, uint32_t time)
 	case 2:
 		if(!get_timer(2)) {
 			toggle_pin(&PORTD, GPIO_PIN7);
-			set_timer(2, 1000);
+			set_timer(2, 10000);
 			pause_loop(1);
  7c8:	81 e0       	ldi	r24, 0x01	; 1
  7ca:	90 e0       	ldi	r25, 0x00	; 0

@@ -896,14 +896,14 @@ END GROUP
  .debug_str     0x00000481       0xa6 uart.o
                                 0x215 (size before relaxing)
 
-.debug_loc      0x00000000      0xaae
+.debug_loc      0x00000000      0xaaf
  *(.debug_loc)
  .debug_loc     0x00000000       0x92 adc.o
  .debug_loc     0x00000092       0x63 counter.o
  .debug_loc     0x000000f5      0x1bc gpio.o
  .debug_loc     0x000002b1      0x2fa pid_control.o
- .debug_loc     0x000005ab      0x2b6 timer.o
- .debug_loc     0x00000861      0x24d uart.o
+ .debug_loc     0x000005ab      0x2b7 timer.o
+ .debug_loc     0x00000862      0x24d uart.o
 
 .debug_macinfo
  *(.debug_macinfo)

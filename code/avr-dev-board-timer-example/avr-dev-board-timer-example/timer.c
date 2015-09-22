@@ -181,7 +181,7 @@ void threads_loop_example()
 	case 0:
 		if(!get_timer(0)) {
 			toggle_pin(&PORTD, GPIO_PIN6);
-			set_timer(0, 250);
+			set_timer(0, 2500);
 			pause_loop(1);
 		}
 		fsm_step++;
@@ -189,7 +189,7 @@ void threads_loop_example()
 	case 1:
 		if(!get_timer(1)) {
 			toggle_pin(&PORTD, GPIO_PIN5);
-			set_timer(1, 500);
+			set_timer(1, 5000);
 			pause_loop(1);
 		}
 		fsm_step++;
@@ -197,7 +197,7 @@ void threads_loop_example()
 	case 2:
 		if(!get_timer(2)) {
 			toggle_pin(&PORTD, GPIO_PIN7);
-			set_timer(2, 1000);
+			set_timer(2, 10000);
 			pause_loop(1);
 		}
 		fsm_step = 0;

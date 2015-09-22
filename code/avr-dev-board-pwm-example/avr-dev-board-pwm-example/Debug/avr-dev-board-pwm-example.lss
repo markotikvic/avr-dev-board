@@ -217,8 +217,8 @@ int main(void)
  152:	80 e0       	ldi	r24, 0x00	; 0
  154:	90 e0       	ldi	r25, 0x00	; 0
  156:	0e 94 74 03 	call	0x6e8	; 0x6e8 <pwm_ref_val>
-			pause_loop(50);					//Drzanje referentne vrednosti 5ms
- 15a:	82 e3       	ldi	r24, 0x32	; 50
+			pause_loop(250);					//Drzanje referentne vrednosti 5ms
+ 15a:	8a ef       	ldi	r24, 0xFA	; 250
  15c:	90 e0       	ldi	r25, 0x00	; 0
  15e:	0e 94 9f 03 	call	0x73e	; 0x73e <pause_loop>
 	init_pwm(&pwm_init_struct);				//Inicijalizacija PWM-a
@@ -237,15 +237,15 @@ int main(void)
  170:	eb 2c       	mov	r14, r11
  172:	f0 2e       	mov	r15, r16
 			pwm_ref_val(i);					//Zadavanje nove reference
-			pause_loop(50);					//Drzanje referentne vrednosti 5ms
+			pause_loop(250);					//Drzanje referentne vrednosti 5ms
 		}
 		for(i = 200; i > 0; i--){
 			pwm_ref_val(i);
  174:	c7 01       	movw	r24, r14
  176:	b6 01       	movw	r22, r12
  178:	0e 94 74 03 	call	0x6e8	; 0x6e8 <pwm_ref_val>
-			pause_loop(50);
- 17c:	82 e3       	ldi	r24, 0x32	; 50
+			pause_loop(250);
+ 17c:	8a ef       	ldi	r24, 0xFA	; 250
  17e:	90 e0       	ldi	r25, 0x00	; 0
  180:	0e 94 9f 03 	call	0x73e	; 0x73e <pause_loop>
  184:	81 e0       	ldi	r24, 0x01	; 1
@@ -256,7 +256,7 @@ int main(void)
     while(1){
 		for(i = 0; i < 200; i++){			//Naizmenicno ispunjavanje faktora ispune od minimalne (0) do maksimalne vrednosti (perioda)
 			pwm_ref_val(i);					//Zadavanje nove reference
-			pause_loop(50);					//Drzanje referentne vrednosti 5ms
+			pause_loop(250);					//Drzanje referentne vrednosti 5ms
 		}
 		for(i = 200; i > 0; i--){
  18e:	c1 14       	cp	r12, r1

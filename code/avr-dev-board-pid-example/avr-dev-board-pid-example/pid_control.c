@@ -55,7 +55,7 @@
 #define PID_CONST ((uint8_t)10)
 
 static void pid();
-static volatile PID_S my_pid;
+static volatile PID_S _pid;
 static volatile uint8_t pid_flag = 0;
 
 static void init_timer_0()
@@ -82,19 +82,19 @@ static void init_timer_0()
 
 void pid_setup_params(float kp, float ki, float kd)
 {
-	my_pid.kp = kp;
-	my_pid.ki = ki;
-	my_pid.kd = kd;
-	my_pid.sample_period = 500;	//50ms for pid loop
-	my_pid.sample_peiod_opt = 1 / 500;
-	my_pid.pwm_period = 200;	//20ms period for motors
+	_pid.kp = kp;
+	_pid.ki = ki;
+	_pid.kd = kd;
+	_pid.sample_period = 500;	//50ms for pid loop
+	_pid.sample_peiod_opt = 1 / 500;
+	_pid.pwm_period = 200;	//20ms period for motors
 	
-	my_pid.last_count = 0;
-	my_pid.last_err = 0;
-	my_pid.ref_value = 0;
-	my_pid.pid_pwm_tick = 0;
-	my_pid.pid_tick_sample = 0;
-	my_pid.dir = CW;
+	_pid.last_count = 0;
+	_pid.last_err = 0;
+	_pid.ref_value = 0;
+	_pid.pid_pwm_tick = 0;
+	_pid.pid_tick_sample = 0;
+	_pid.mot_dir = CW;
 
 	enable_counter();
 	enable_h_bridge();
@@ -103,42 +103,49 @@ void pid_setup_params(float kp, float ki, float kd)
 
 void pid_ref_val(long ref_val)
 {
-	my_pid.ref_value = ref_val;
+	_pid.ref_value = ref_val;
 }
 
 void pid_mot_direction(uint8_t mot_dir)
 {
-	my_pid.dir = mot_dir;
+	_pid.mot_dir = mot_dir;
 }
 
 //Gets called in timer 0 interrupt routine.
 static void pid()
 {
 	long count = get_count();
-	long temp = 0;
-	my_pid.err = my_pid.ref_value - count;	/* Position difference. */
+	long pid_val = 0;
+	_pid.err = _pid.ref_value - count;	/* Position difference. */
 
-	my_pid.err_sum += my_pid.err;					/* Error sum. */
-	if(my_pid.err_sum > 200) my_pid.err_sum = 200;	/* Anti wind-up */
+	_pid.err_sum += _pid.err;					/* Error sum. */
+	
+	if(_pid.err_sum > 100)
+		_pid.err_sum = 100;	/* Anti wind-up */
 
-	my_pid.err_diff = (long)((my_pid.err - my_pid.last_err)*my_pid.sample_peiod_opt);	/* 1st order error differential. */
+	_pid.err_diff = (long)((_pid.err - _pid.last_err)*_pid.sample_peiod_opt);	/* 1st order error differential. */
 
 	/* PID output */
-	temp = my_pid.kp*my_pid.err + my_pid.ki*my_pid.err_sum + my_pid.kd*my_pid.err_diff;
-	if(temp > 0) {
-		my_pid.dir = CW;
-		if(temp > my_pid.pwm_period) my_pid.pwm_top_val = my_pid.pwm_period;
-		else my_pid.pwm_top_val = (uint16_t)(temp);
+	pid_val = _pid.kp*_pid.err + _pid.ki*_pid.err_sum + _pid.kd*_pid.err_diff;
+	
+	if(pid_val > 0) {
+		_pid.mot_dir = CW;
+		if(pid_val > _pid.pwm_period)
+			_pid.pwm_top_val = _pid.pwm_period;
+		else
+			_pid.pwm_top_val = (uint16_t)(pid_val);
 	} else {
-		my_pid.dir = CCW;
-		if(temp < -my_pid.pwm_period) my_pid.pwm_top_val = my_pid.pwm_period;
-		else my_pid.pwm_top_val = (uint16_t)(-temp);
+		_pid.mot_dir = CCW;
+		if(pid_val < -_pid.pwm_period)
+			_pid.pwm_top_val = _pid.pwm_period;
+		else
+			_pid.pwm_top_val = (uint16_t)(-pid_val);
 	}
 		
 
 	/* Memorize last values. */
-	my_pid.last_count = count;
-	my_pid.last_err = my_pid.err;
+	_pid.last_count = count;
+	_pid.last_err = _pid.err;
 }
 
 void stop_pid_control()
@@ -154,23 +161,20 @@ void start_pid_control()
 ISR(TIMER0_OVF_vect)
 {
 	if(pid_flag == PID_ON) {
-		my_pid.pid_tick_sample++;
-		if(my_pid.pid_tick_sample >= my_pid.sample_period) {
-			my_pid.pid_tick_sample = 0;
+		_pid.pid_tick_sample++;
+		if(_pid.pid_tick_sample >= _pid.sample_period) {
+			_pid.pid_tick_sample = 0;
 			pid();
 		}
 
-		my_pid.pid_pwm_tick++;
-		if(my_pid.pid_pwm_tick >= my_pid.pwm_period && my_pid.pwm_top_val > 0) {
-			my_pid.pid_pwm_tick = 0;
-			if(my_pid.dir == CW){
+		_pid.pid_pwm_tick++;
+		if(_pid.pid_pwm_tick >= _pid.pwm_period && _pid.pwm_top_val > 0) {
+			_pid.pid_pwm_tick = 0;
+			if(_pid.mot_dir == CW)
 				MOT_PORT |= (1 << MOT_PIN0);
-				MOT_PORT &= ~(1 << MOT_PIN1);
-			} else {
-				MOT_PORT |= (1 << MOT_PIN1);
-				MOT_PORT &= ~(1 << MOT_PIN0);	
-			}
-		} else if (my_pid.pid_pwm_tick >= my_pid.pwm_top_val) {
+			else 
+				MOT_PORT |= (1 << MOT_PIN1);	
+		} else if (_pid.pid_pwm_tick >= _pid.pwm_top_val) {
 			MOT_PORT &= ~(1 << MOT_PIN0);
 			MOT_PORT &= ~(1 << MOT_PIN1);
 		}

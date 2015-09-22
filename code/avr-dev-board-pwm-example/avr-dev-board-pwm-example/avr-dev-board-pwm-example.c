@@ -37,11 +37,11 @@ int main(void)
     while(1){
 		for(i = 0; i < 200; i++){			//Naizmenicno ispunjavanje faktora ispune od minimalne (0) do maksimalne vrednosti (perioda)
 			pwm_ref_val(i);					//Zadavanje nove reference
-			pause_loop(50);					//Drzanje referentne vrednosti 5ms
+			pause_loop(250);					//Drzanje referentne vrednosti 5ms
 		}
 		for(i = 200; i > 0; i--){
 			pwm_ref_val(i);
-			pause_loop(50);
+			pause_loop(250);
 		}
     }
 }

@@ -17,7 +17,7 @@
 #define CCW ((uint8_t)1)
 
 typedef struct {
-	uint8_t dir;
+	uint8_t mot_dir;
 	float kp;
 	float ki;
 	float kd;
