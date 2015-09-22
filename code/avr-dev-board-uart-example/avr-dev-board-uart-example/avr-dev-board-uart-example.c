@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <avr/delay.h>
+#include "gpio.h"
 #include "uart.h"
 #include "util.h"
 
@@ -18,6 +19,11 @@ int main(void)
 
 	send_string("Hello World from AVR-dev-board!\n\r");	// Pozdravna poruka
     
+	// Inicijalizacija izlaza
+	set_pin_dir(&DDRC, 0, OUTPUT);
+	set_pin_dir(&DDRC, 1, OUTPUT);
+	set_pin_dir(&DDRC, 3, OUTPUT);
+
 	while(1)
     {
 		analyze_uart();		// Analiziranje pristiglih komandi

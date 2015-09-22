@@ -4,6 +4,8 @@
 
 avr-dev-board-uart-example.c
 
+gpio.c
+
 uart.c
 
 util.c

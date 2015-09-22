@@ -7,6 +7,7 @@
 
 #include "uart.h"
 #include "util.h"
+#include "gpio.h"
 #include "stdlib.h"
 #include <string.h>
 #include <avr/interrupt.h>
@@ -106,7 +107,54 @@ void analyze_uart(void)
 /*	Napomena: ovde uneti korisnicki kod	*/
 void interpret_uart(char *temp)
 {
-	send_string(temp);	// Echo - vracanje dobijene komande nazad
+	char arg[10];
+	char val[5];
+	uint8_t i;
+	
+	i = 0;
+	while (*temp != '=') {
+		arg[i] = *temp;
+		i++;
+		temp++;
+	}
+	arg[i] = '\0';
+	
+	temp++;
+	i = 0;
+	while (*temp != '\r') {
+		val[i] = *temp;
+		i++;
+		temp++;
+	}
+	val[i] = '\0';
+	
+	if (!strcmp(arg, "AT&D")) {
+		if (!strcmp(val, "1")) {
+			set_pin(&PORTC, 0);
+			clear_pin(&PORTC, 1);
+			clear_pin(&PORTC, 3);
+		} else if (!strcmp(val, "2")) {
+			clear_pin(&PORTC, 0);
+			set_pin(&PORTC, 1);
+			clear_pin(&PORTC, 3);
+		} else if (!strcmp(val, "3")) {
+			clear_pin(&PORTC, 0);
+			clear_pin(&PORTC, 1);
+			set_pin(&PORTC, 3);			
+		} else if (!strcmp(val, "ALL")) {
+			set_pin(&PORTC, 0);
+			set_pin(&PORTC, 1);
+			set_pin(&PORTC, 3);
+		} else if (!strcmp(val, "0")) {
+			clear_pin(&PORTC, 0);
+			clear_pin(&PORTC, 1);
+			clear_pin(&PORTC, 3);
+		} else {
+			send_string("Neispravan parametar\n");		
+		}
+	}  else {
+		send_string("Komanda nije pronadjena\n");
+	}
 }
 
 //ISR(USART_TX_vect)
